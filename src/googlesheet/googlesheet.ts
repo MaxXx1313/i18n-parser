@@ -1,5 +1,5 @@
-import { google } from 'googleapis';
 import { GoogleSheetsClient } from "./client";
+import { JsonToken } from "../parser";
 
 const serviceAccountKeyFile = "./config/i18n-sync@b-synch.iam.gserviceaccount.com.json";
 
@@ -22,4 +22,47 @@ export async function parseSpreadsheet(spreadsheetId: string) {
     // ]
     // await _writeGoogleSheet(googleSheetClient, sheetId, tabName, range, dataToBeInserted);
 }
+
+
+/**
+ * @more https://developers.google.com/sheets/api/guides/concepts
+ */
+export async function publishSpreadsheet(spreadsheetId: string, data: { [lang: string]: JsonToken[] }) {
+    // Generating google sheet client
+    const googleSheetClient = new GoogleSheetsClient(serviceAccountKeyFile);
+
+
+    // prepare data
+    const firstRow = ['token'];
+    const rowsHash: { [token: string]: string[] } = {};
+
+    const langs = Object.keys(data);
+    for (let ilang = 0; ilang < langs.length; ilang++) {
+        const langHash = langs[ilang];
+        firstRow.push(langHash);
+
+        for (let irow = 0; irow < data![langHash]!.length; irow++) {
+            const jsonToken: JsonToken = data![langHash][irow];
+            rowsHash[jsonToken.key] = rowsHash[jsonToken.key] || [];
+            rowsHash[jsonToken.key][ilang] = jsonToken.value;
+        }
+    }
+
+    // combine rows
+    const rows: string[][] = [];
+    rows.push(firstRow);
+    for (const token in rowsHash) {
+        const row = [token];
+        row.push(...rowsHash[token]);
+        rows.push(row);
+    }
+
+    // Write to sheet
+    await googleSheetClient.writeGoogleSheet(spreadsheetId, "A1", rows);
+}
+
+
+// const data = await googleSheetClient.readGoogleSheet(spreadsheetId, "1:1");
+// console.log(data);
+// await googleSheetClient.writeGoogleSheet(spreadsheetId, "A1", rows);
 

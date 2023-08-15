@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import { anyobject, xpath_plain } from "../lib/xpath";
-import { JsonToken } from "./JsonToken.interface";
+import { JsonToken } from "./parser.interface";
 
 /**
  * Parse json file and produce structured result

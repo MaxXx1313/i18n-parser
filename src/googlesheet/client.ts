@@ -29,13 +29,14 @@ export class GoogleSheetsClient {
     async writeGoogleSheet(sheetId: string, range: string, data: string[][]) {
         const googleSheetClient = await this.initialize();
 
-        await googleSheetClient.spreadsheets.values.append({
+        await googleSheetClient.spreadsheets.values.update({
             spreadsheetId: sheetId,
             range: range,
             valueInputOption: 'USER_ENTERED',
-            insertDataOption: 'INSERT_ROWS',
+            // insertDataOption: 'INSERT_ROWS',
             resource: {
                 "majorDimension": "ROWS",
+                "range": range,
                 "values": data
             },
         })
