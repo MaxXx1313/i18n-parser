@@ -6,6 +6,9 @@
   "bin": {
     "i18p": "./dist/bin/i18p.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "start": "./dist/bin/i18p.js",
     "bin": "npx ts-node src/bin/i18p.ts",
@@ -18,7 +21,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "find-up": "^6.3.0",
+    "find-up": "^5.0.0",
     "googleapis": "^124.0.0",
     "yargs": "^17.7.2"
   },
