@@ -1,5 +1,6 @@
 import * as fs from "fs";
-import { anyobject, isObject, plainObject } from "./xpath";
+import { anyobject, isObject, plainObject } from "../lib/xpath";
+import { JsonToken } from "./JsonToken.interface";
 
 /**
  * Parse json file and produce structured result
@@ -13,7 +14,7 @@ export function jsonParseFile(path: string) {
 /**
  * Parse json structure
  */
-export function jsonParse(jsonData: anyobject) {
+export function jsonParse(jsonData: anyobject): JsonToken[] {
 
     const result: JsonToken[] = [];
 
@@ -37,10 +38,4 @@ export function jsonParse(jsonData: anyobject) {
         }
     }
     return result;
-}
-
-
-export interface JsonToken {
-    key: string;
-    value: string;
 }

@@ -10,7 +10,7 @@
     "strict": true,
     "skipLibCheck": true,
     "target": "es2017",
-    "types": ["node"],
+    "types": ["node", "mocha"],
     "paths": {
       "@xafer-types": [
         "../../xafer-types/src/index"
