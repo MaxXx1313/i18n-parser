@@ -20,6 +20,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/solhea-sprint/i18n-parser.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/solhea-sprint/i18n-parser/-/issues"
+  },
   "dependencies": {
     "find-up": "^5.0.0",
     "googleapis": "^124.0.0",

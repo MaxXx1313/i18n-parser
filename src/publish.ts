@@ -5,7 +5,7 @@ import { publishSpreadsheet } from "./googlesheet/googlesheet";
 /**
  *
  */
-export async function publishFolder(keyFile:string, folderpath: string, spreadsheetId: string) {
+export async function publishFolder(keyFile: string, folderpath: string, spreadsheetId: string) {
     const langFiles = jsonScanFolder(folderpath);
 
     // console.log('Found languages:');
@@ -27,7 +27,8 @@ export async function publishFolder(keyFile:string, folderpath: string, spreadsh
     }
 
     ///
-    console.log('Uploading...');
+    const link = 'https://docs.google.com/spreadsheets/d/' + spreadsheetId;
+    console.log('Uploading to spreadsheet: ', link);
     await publishSpreadsheet(keyFile, spreadsheetId, filesData);
 
 

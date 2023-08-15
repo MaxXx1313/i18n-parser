@@ -6,7 +6,8 @@ import { jsonStringifyFile } from "./parser";
  *
  */
 export async function parseToFolder(keyFile: string, folderpath: string, spreadsheetId: string) {
-    console.log('Fetching spreadsheet data...');
+    const link = 'https://docs.google.com/spreadsheets/d/' + spreadsheetId;
+    console.log('Fetching spreadsheet data: ', link);
     const langData = await parseSpreadsheet(keyFile, spreadsheetId);
 
     // console.log('Found languages:');
