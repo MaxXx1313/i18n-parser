@@ -5,9 +5,9 @@ import { jsonStringifyFile } from "./parser";
 /**
  *
  */
-export async function parseToFolder(folderpath: string, spreadsheetId: string) {
+export async function parseToFolder(keyFile: string, folderpath: string, spreadsheetId: string) {
     console.log('Fetching spreadsheet data...');
-    const langData = await parseSpreadsheet(spreadsheetId);
+    const langData = await parseSpreadsheet(keyFile, spreadsheetId);
 
     // console.log('Found languages:');
     // for (const lang in langData) {

@@ -2,15 +2,12 @@ import { GoogleSheetsClient } from "./google-sheets-client";
 import { JsonToken, LangData } from "../parser";
 import * as assert from "assert";
 
-const serviceAccountKeyFile = "./config/i18n-sync@b-synch.iam.gserviceaccount.com.json";
-
-
 /**
  * @more https://developers.google.com/sheets/api/guides/concepts
  */
-export async function publishSpreadsheet(spreadsheetId: string, data: LangData) {
+export async function publishSpreadsheet(keyFile: string, spreadsheetId: string, data: LangData) {
     // Generating google sheet client
-    const googleSheetClient = new GoogleSheetsClient(serviceAccountKeyFile);
+    const googleSheetClient = new GoogleSheetsClient(keyFile);
 
 
     // prepare data
@@ -46,9 +43,9 @@ export async function publishSpreadsheet(spreadsheetId: string, data: LangData) 
 /**
  * @more https://developers.google.com/sheets/api/guides/concepts
  */
-export async function parseSpreadsheet(spreadsheetId: string): Promise<LangData> {
+export async function parseSpreadsheet(keyFile: string, spreadsheetId: string): Promise<LangData> {
     // Generating google sheet client
-    const googleSheetClient = new GoogleSheetsClient(serviceAccountKeyFile);
+    const googleSheetClient = new GoogleSheetsClient(keyFile);
 
     // Reading Google Sheet from a specific range
     const [langsRow] = await googleSheetClient.readGoogleSheet(spreadsheetId, "1:1");
@@ -64,7 +61,6 @@ export async function parseSpreadsheet(spreadsheetId: string): Promise<LangData>
         tokensColumn.push(tokensColumnData[i][0]);
     }
     assert.equal(tokensColumn[0], 'token', 'Cell A1 must have "token" name');
-
 
 
     // fetch data
