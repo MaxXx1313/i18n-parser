@@ -1,10 +1,17 @@
-import { jsonParseFile, jsonStringifyFile } from "./parser";
+import { parseSpreadsheet } from "./googlesheet/googlesheet";
 
 console.log('hello');
 
 
-const result = jsonParseFile('./assets/sample1/en.json');
+const spreadsheetId = "1n9-ZIbVC5CVjILT2Iw3xfCCc5AsDbkwqaeaEY3ZE56A";
 
-console.log(result);
+(async function() {
 
-jsonStringifyFile('./assets/sample-result/en.json', result);
+    await parseSpreadsheet(spreadsheetId);
+})();
+//
+// const result = jsonParseFile('./assets/sample1/en.json');
+//
+// console.log(result);
+//
+// jsonStringifyFile('./assets/sample-result/en.json', result);
