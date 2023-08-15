@@ -1,20 +1,30 @@
 {
-  "name": "i18n-parser",
+  "name": "i18p",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/exports.js",
+  "bin": {
+    "i18p": "./dist/bin/i18p.js"
+  },
   "scripts": {
+    "start": "./dist/bin/i18p.js",
+    "bin": "npx ts-node src/bin/i18p.ts",
     "dev": "npx ts-node src/index.ts",
-    "test": "npx jest"
+    "prebuild": "rm -rf dist",
+    "build": "npx tsc",
+    "postbuild": "chmod +x ./dist/bin/i18p.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "find-up": "^6.3.0",
     "googleapis": "^124.0.0",
-    "typescript": "^5.1.6"
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "ts-node": "^10.9.1"
+    "@types/yargs": "^17.0.24",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
   }
 }
