@@ -1,5 +1,6 @@
 import { GoogleSheetsClient } from "./google-sheets-client";
 import { JsonToken, LangData } from "../parser";
+import * as assert from "assert";
 
 const serviceAccountKeyFile = "./config/i18n-sync@b-synch.iam.gserviceaccount.com.json";
 
@@ -45,19 +46,42 @@ export async function publishSpreadsheet(spreadsheetId: string, data: LangData) 
 /**
  * @more https://developers.google.com/sheets/api/guides/concepts
  */
-export async function parseSpreadsheet(spreadsheetId: string) {
+export async function parseSpreadsheet(spreadsheetId: string): Promise<LangData> {
     // Generating google sheet client
     const googleSheetClient = new GoogleSheetsClient(serviceAccountKeyFile);
 
     // Reading Google Sheet from a specific range
-    const data = await googleSheetClient.readGoogleSheet(spreadsheetId, "1:1");
-    console.log(data);
-    await googleSheetClient.writeGoogleSheet(spreadsheetId, "A2", [['test']]);
+    const [langsRow] = await googleSheetClient.readGoogleSheet(spreadsheetId, "1:1");
 
-    // // Adding a new row to Google Sheet
-    // const dataToBeInserted = [
-    //     ['11', 'rohith', 'Rohith', 'Sharma', 'Active'],
-    //     ['12', 'virat', 'Virat', 'Kohli', 'Active']
-    // ]
-    // await _writeGoogleSheet(googleSheetClient, sheetId, tabName, range, dataToBeInserted);
+    // verify row data
+    assert.equal(langsRow[0], 'token', 'First column must have "token" name');
+
+    // column data
+    const tokensColumnData: string[][] = await googleSheetClient.readGoogleSheet(spreadsheetId, 'A:A');
+
+    const tokensColumn = [];
+    for (let i = 0; i < tokensColumnData?.length; i++) {
+        tokensColumn.push(tokensColumnData[i][0]);
+    }
+    assert.equal(tokensColumn[0], 'token', 'Cell A1 must have "token" name');
+
+
+
+    // fetch data
+    const data: string[][] = await googleSheetClient.readGoogleSheet(spreadsheetId, `R1C1:R${tokensColumn.length}C${langsRow.length}`);
+
+    // iterations is started from 1 because we skip first row and column
+    const result: LangData = {};
+    for (let ilang = 1; ilang < langsRow.length; ilang++) {
+        const langData: JsonToken[] = [];
+        for (let irow = 1; irow < tokensColumn.length; irow++) {
+            langData.push({
+                key: tokensColumn[irow],
+                value: data[irow][ilang] || '',
+            });
+        }
+        result[langsRow[ilang]] = langData;
+    }
+
+    return result;
 }

@@ -8,10 +8,10 @@ import { publishSpreadsheet } from "./googlesheet/googlesheet";
 export async function publishFolder(folderpath: string, spreadsheetId: string) {
     const langFiles = jsonScanFolder(folderpath);
 
-    console.log('Found languages:');
-    for (const langFile of langFiles) {
-        console.log('\t%s (%s)', langFile.lang, langFile.file);
-    }
+    // console.log('Found languages:');
+    // for (const langFile of langFiles) {
+    //     console.log('\t%s (%s)', langFile.lang, langFile.file);
+    // }
 
     ///
     const filesData: LangData = {};
@@ -29,4 +29,7 @@ export async function publishFolder(folderpath: string, spreadsheetId: string) {
     ///
     console.log('Uploading...');
     await publishSpreadsheet(spreadsheetId, filesData);
+
+
+    console.log('Done!');
 }
