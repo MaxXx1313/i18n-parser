@@ -57,3 +57,8 @@ First top left cell (A1) contains `token` word, which should not be changed.
 | button.save   | Save   | Salva   |
 | button.cancel | Cancel | Annulla |
 
+
+
+## Development
+
+Run `npm run dev` to build and run the tool

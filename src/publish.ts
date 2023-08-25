@@ -1,11 +1,13 @@
 import { jsonParseFile, jsonScanFolder, LangData } from "./parser";
 import * as path from "path";
 import { publishSpreadsheet } from "./googlesheet/googlesheet";
+import { id2url, url2id } from "./googlesheet/parse-url";
 
 /**
  *
  */
-export async function publishFolder(keyFile: string, folderpath: string, spreadsheetId: string) {
+export async function publishFolder(keyFile: string, folderpath: string, spreadsheetIdOrUrl: string) {
+    const spreadsheetId = url2id(spreadsheetIdOrUrl);
     const langFiles = jsonScanFolder(folderpath);
 
     // console.log('Found languages:');
@@ -27,7 +29,7 @@ export async function publishFolder(keyFile: string, folderpath: string, spreads
     }
 
     ///
-    const link = 'https://docs.google.com/spreadsheets/d/' + spreadsheetId;
+    const link = id2url(spreadsheetId);
     console.log('Uploading to spreadsheet: ', link);
     await publishSpreadsheet(keyFile, spreadsheetId, filesData);
 
