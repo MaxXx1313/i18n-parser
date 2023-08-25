@@ -1,5 +1,5 @@
 import { GoogleSheetsClient } from "./client";
-import { JsonToken } from "../parser";
+import { JsonToken, LangData } from "../parser";
 
 const serviceAccountKeyFile = "./config/i18n-sync@b-synch.iam.gserviceaccount.com.json";
 
@@ -27,7 +27,7 @@ export async function parseSpreadsheet(spreadsheetId: string) {
 /**
  * @more https://developers.google.com/sheets/api/guides/concepts
  */
-export async function publishSpreadsheet(spreadsheetId: string, data: { [lang: string]: JsonToken[] }) {
+export async function publishSpreadsheet(spreadsheetId: string, data: LangData) {
     // Generating google sheet client
     const googleSheetClient = new GoogleSheetsClient(serviceAccountKeyFile);
 

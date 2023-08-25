@@ -1,5 +1,4 @@
-import { publishSpreadsheet } from "./googlesheet/googlesheet";
-import { jsonParseFile } from "./parser";
+import { publishFolder } from "./publish";
 
 console.log('hello');
 
@@ -7,8 +6,7 @@ console.log('hello');
 const spreadsheetId = "1n9-ZIbVC5CVjILT2Iw3xfCCc5AsDbkwqaeaEY3ZE56A";
 
 (async function() {
-    const result = jsonParseFile('./assets/sample1/en.json');
-    await publishSpreadsheet(spreadsheetId, {en: result});
+    await publishFolder('./assets/sample1', spreadsheetId);
 })();
 //
 // const result = jsonParseFile('./assets/sample1/en.json');

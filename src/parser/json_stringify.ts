@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import { anyobject, xpath_set } from "../lib/xpath";
-import { JsonToken } from "./parser.interface";
+import { JsonToken } from "../interface/parser.interface";
 import * as path from "path";
 
 /**
