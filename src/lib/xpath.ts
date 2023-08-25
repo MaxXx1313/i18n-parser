@@ -33,6 +33,7 @@ export function xpath_get(obj: anyobject, path: string | string[], separator = '
 export function xpath_set(obj: anyobject, path: string | string[], value: any, separator = '.', maxDepth = -1): anyobject {
     separator = (typeof separator == 'undefined') ? '.' : separator;
     let pathParts = Array.isArray(path) ? path : path.split(separator);
+    maxDepth = Math.min(maxDepth, pathParts.length - 1);
     let pathTokens = maxDepth >= 0 ? pathParts.slice(0, maxDepth) : pathParts.slice(0, -1);
     let valTokens = maxDepth >= 0 ? pathParts.slice(maxDepth) : [pathParts[pathParts.length - 1]];
     let valPart = valTokens.join(separator);

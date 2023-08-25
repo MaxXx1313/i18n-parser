@@ -1,14 +1,16 @@
 import * as fs from "fs";
 import { anyobject, xpath_set } from "../lib/xpath";
 import { JsonToken } from "./JsonToken.interface";
+import * as path from "path";
 
 /**
  * Set json data
  */
-export function jsonStringifyFile(path: string, data: JsonToken[]) {
+export function jsonStringifyFile(filepath: string, data: JsonToken[]) {
     const jsonData = jsonStringify(data);
-    const jsonDataStr = JSON.stringify(jsonData);
-    return fs.writeFileSync(path, jsonDataStr, {encoding: "utf-8"});
+    const jsonDataStr = JSON.stringify(jsonData, null, 4);
+    fs.mkdirSync(path.dirname(filepath), {recursive: true});
+    return fs.writeFileSync(filepath, jsonDataStr, {encoding: "utf-8"});
 }
 
 /**
@@ -20,7 +22,7 @@ export function jsonStringify(data: JsonToken[]): anyobject {
     const result = {};
 
     for (const token of data) {
-        xpath_set(result, token.key, token.value, '.', 2);
+        xpath_set(result, token.key, token.value, '.', 1);
     }
     return result;
 
