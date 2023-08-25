@@ -12,24 +12,26 @@ class GoogleSheetsClient {
         }
         return this.init$;
     }
-    async readGoogleSheet(spreadsheetId, range) {
+    async readGoogleSheet(spreadsheetId, range, sheetName) {
         const googleSheetClient = await this.initialize();
+        const sheetRange = (sheetName ? sheetName + '!' : '') + range;
         const res = await googleSheetClient.spreadsheets.values.get({
             spreadsheetId: spreadsheetId,
-            range: range,
+            range: sheetRange,
         });
         return res.data.values;
     }
-    async writeGoogleSheet(sheetId, range, data) {
+    async writeGoogleSheet(sheetId, data, range, sheetName) {
         const googleSheetClient = await this.initialize();
+        const sheetRange = (sheetName ? sheetName + '!' : '') + range;
         await googleSheetClient.spreadsheets.values.update({
             spreadsheetId: sheetId,
-            range: range,
+            range: sheetRange,
             valueInputOption: 'USER_ENTERED',
             // insertDataOption: 'INSERT_ROWS',
             resource: {
                 "majorDimension": "ROWS",
-                "range": range,
+                "range": sheetRange,
                 "values": data
             },
         });
