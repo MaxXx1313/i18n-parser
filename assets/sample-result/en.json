@@ -1,0 +1,17 @@
+{
+    "hello-world": "Hello world",
+    "another-label": "Some other label",
+    "click-here": "click here",
+    "app": {
+        "title": "My application",
+        "name": "My name",
+        "input-required": " *input-required"
+    },
+    "sample": {
+        "title.deep2": "title with dot",
+        "title.empty": "",
+        "title.space": " ",
+        "title.spaces": "  2)  2)   3)(3   ",
+        "title.non-existed": ""
+    }
+}

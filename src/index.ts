@@ -14,5 +14,5 @@ const keyFile = "./config/i18n-sync@b-synch.iam.gserviceaccount.com.json";
 
 //
 // (async function() {
-//     await parseToFolder(keyFile, './assets/sample-result', spreadsheetUrl, 'Sheet2');
+//     await parseToFolder(keyFile, './assets/sample-result', spreadsheetUrl, 'Sheet1');
 // })();

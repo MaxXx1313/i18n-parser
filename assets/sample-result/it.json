@@ -1,0 +1,15 @@
+{
+    "hello-world": "it:Hello world",
+    "another-label": "it:Some other label",
+    "click-here": "it:click here",
+    "app": {
+        "title": "it:My application",
+        "name": "it:My name",
+        "input-required": "it: *input-required"
+    },
+    "sample": {
+        "title.deep2": "it:title with dot",
+        "title.empty": "",
+        "title.space": "it: "
+    }
+}
