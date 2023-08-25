@@ -24,14 +24,26 @@ yargs(hideBin(process.argv))
         assert.ok(argv.id, '--id is required');
         assert.ok(argv.folder, '--folder is required');
         assert.ok(argv.keyFile, '--keyFile is required');
-        await parseToFolder(argv.keyFile, argv.folder, argv.id);
+        await parseToFolder(argv.keyFile, argv.folder, argv.id, argv.sheet);
     })
     .command('publish', 'copy i18n data to google sheet', () => {
     }, async (argv: ArgumentsCamelCase<any>) => {
         assert.ok(argv.id, '--id is required');
         assert.ok(argv.folder, '--folder is required');
         assert.ok(argv.keyFile, '--keyFile is required');
-        await publishFolder(argv.keyFile, argv.folder, argv.id);
+        await publishFolder(argv.keyFile, argv.folder, argv.id, argv.sheet);
+    })
+    .option('id', {
+        type: 'string',
+        description: 'Spreadsheet ID or URL'
+    })
+    .option('folder', {
+        type: 'string',
+        description: 'local path for i18n files'
+    })
+    .option('keyFile', {
+        type: 'string',
+        description: 'local path to "Service Account" key file'
     })
     .demandCommand(1)
     .parse()

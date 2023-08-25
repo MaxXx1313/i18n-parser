@@ -5,7 +5,7 @@ import * as assert from "assert";
 /**
  * @more https://developers.google.com/sheets/api/guides/concepts
  */
-export async function publishSpreadsheet(keyFile: string, spreadsheetId: string, data: LangData) {
+export async function publishSpreadsheet(keyFile: string, data: LangData, spreadsheetId: string, sheetName?: string) {
     // Generating google sheet client
     const googleSheetClient = new GoogleSheetsClient(keyFile);
 
@@ -36,25 +36,25 @@ export async function publishSpreadsheet(keyFile: string, spreadsheetId: string,
     }
 
     // Write to sheet
-    await googleSheetClient.writeGoogleSheet(spreadsheetId, "A1", rows);
+    await googleSheetClient.writeGoogleSheet(spreadsheetId, rows, "A1", sheetName);
 }
 
 
 /**
  * @more https://developers.google.com/sheets/api/guides/concepts
  */
-export async function parseSpreadsheet(keyFile: string, spreadsheetId: string): Promise<LangData> {
+export async function parseSpreadsheet(keyFile: string, spreadsheetId: string, sheetName?: string): Promise<LangData> {
     // Generating google sheet client
     const googleSheetClient = new GoogleSheetsClient(keyFile);
 
     // Reading Google Sheet from a specific range
-    const [langsRow] = await googleSheetClient.readGoogleSheet(spreadsheetId, "1:1");
+    const [langsRow] = await googleSheetClient.readGoogleSheet(spreadsheetId, "1:1", sheetName);
 
     // verify row data
     assert.equal(langsRow[0], 'token', 'First column must have "token" name');
 
     // column data
-    const tokensColumnData: string[][] = await googleSheetClient.readGoogleSheet(spreadsheetId, 'A:A');
+    const tokensColumnData: string[][] = await googleSheetClient.readGoogleSheet(spreadsheetId, 'A:A', sheetName);
 
     const tokensColumn = [];
     for (let i = 0; i < tokensColumnData?.length; i++) {
@@ -64,7 +64,7 @@ export async function parseSpreadsheet(keyFile: string, spreadsheetId: string): 
 
 
     // fetch data
-    const data: string[][] = await googleSheetClient.readGoogleSheet(spreadsheetId, `R1C1:R${tokensColumn.length}C${langsRow.length}`);
+    const data: string[][] = await googleSheetClient.readGoogleSheet(spreadsheetId, `R1C1:R${tokensColumn.length}C${langsRow.length}`, sheetName);
 
     // iterations is started from 1 because we skip first row and column
     const result: LangData = {};

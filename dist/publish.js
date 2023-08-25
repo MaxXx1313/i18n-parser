@@ -4,10 +4,12 @@ exports.publishFolder = void 0;
 const parser_1 = require("./parser");
 const path = require("path");
 const googlesheet_1 = require("./googlesheet/googlesheet");
+const parse_url_1 = require("./googlesheet/parse-url");
 /**
  *
  */
-async function publishFolder(keyFile, folderpath, spreadsheetId) {
+async function publishFolder(keyFile, folderpath, spreadsheetIdOrUrl, sheetName) {
+    const spreadsheetId = (0, parse_url_1.url2id)(spreadsheetIdOrUrl);
     const langFiles = (0, parser_1.jsonScanFolder)(folderpath);
     // console.log('Found languages:');
     // for (const langFile of langFiles) {
@@ -27,9 +29,9 @@ async function publishFolder(keyFile, folderpath, spreadsheetId) {
         }
     }
     ///
-    const link = 'https://docs.google.com/spreadsheets/d/' + spreadsheetId;
+    const link = (0, parse_url_1.id2url)(spreadsheetId);
     console.log('Uploading to spreadsheet: ', link);
-    await (0, googlesheet_1.publishSpreadsheet)(keyFile, spreadsheetId, filesData);
+    await (0, googlesheet_1.publishSpreadsheet)(keyFile, filesData, spreadsheetId, sheetName);
     console.log('Done!');
 }
 exports.publishFolder = publishFolder;

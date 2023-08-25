@@ -26,6 +26,7 @@ Create configuration file `i18p.json` with the following content:
 ```json
 {
   "id": "1n9-ZIb*************************************",
+  "sheet": "Sheet1",
   "folder": "assets/i18n",
   "keyFile": "./config/i18n-sync@my-project.iam.gserviceaccount.com.json"
 }
