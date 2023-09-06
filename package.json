@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/exports.js",
   "bin": {
-    "i18p": "./dist/bin/i18p.js"
+    "i18n-parser": "./dist/bin/i18p.js"
   },
   "files": [
     "dist"
