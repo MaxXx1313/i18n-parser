@@ -25,14 +25,17 @@ yargs(hideBin(process.argv))
         assert.ok(argv.id, '--id is required');
         assert.ok(argv.folder, '--folder is required');
         assert.ok(argv.keyFile, '--keyFile is required');
-        await parseToFolder(argv.keyFile, argv.folder, argv.id, argv.sheet);
+        await parseToFolder(argv.keyFile, argv.folder, argv.id, {
+            sheetName: argv.sheet,
+            skipEmpty: !!argv.skipEmpty,
+        });
     })
     .command('publish', 'copy i18n data to google sheet', () => {
     }, async (argv: ArgumentsCamelCase<any>) => {
         assert.ok(argv.id, '--id is required');
         assert.ok(argv.folder, '--folder is required');
         assert.ok(argv.keyFile, '--keyFile is required');
-        await publishFolder(argv.keyFile, argv.folder, argv.id, argv.sheet);
+        await publishFolder(argv.keyFile, argv.folder, argv.id, {sheetName: argv.sheet});
     })
     .option('id', {
         type: 'string',
@@ -49,6 +52,10 @@ yargs(hideBin(process.argv))
     .option('sheet', {
         type: 'string',
         description: '(optional) Sheet name'
+    })
+    .option('skip-empty', {
+        type: 'boolean',
+        description: 'Skip empty cells'
     })
     .alias('h', 'help')
     .command('info', 'Print spreadsheet link', () => {

@@ -6,7 +6,9 @@ import { id2url, url2id } from "./googlesheet/parse-url";
 /**
  *
  */
-export async function publishFolder(keyFile: string, folderpath: string, spreadsheetIdOrUrl: string, sheetName?: string) {
+export async function publishFolder(keyFile: string, folderpath: string, spreadsheetIdOrUrl: string, opts?: {
+    sheetName?: string,
+}) {
     const spreadsheetId = url2id(spreadsheetIdOrUrl);
     const langFiles = jsonScanFolder(folderpath);
 
@@ -31,7 +33,7 @@ export async function publishFolder(keyFile: string, folderpath: string, spreads
     ///
     const link = id2url(spreadsheetId);
     console.log('Uploading to spreadsheet: ', link);
-    await publishSpreadsheet(keyFile, filesData, spreadsheetId, sheetName);
+    await publishSpreadsheet(keyFile, filesData, spreadsheetId, opts?.sheetName);
 
 
     console.log('Done!');
