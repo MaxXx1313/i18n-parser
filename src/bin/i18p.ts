@@ -8,6 +8,7 @@ import { ArgumentsCamelCase } from "yargs";
 import * as findUp from 'find-up';
 import * as fs from "fs";
 import { publishFolder } from "../publish";
+import { id2url, url2id } from "../googlesheet/parse-url";
 
 
 const configPath = findUp.sync(['.i18prc', 'i18p.json']);
@@ -48,6 +49,23 @@ yargs(hideBin(process.argv))
     .option('sheet', {
         type: 'string',
         description: '(optional) Sheet name'
+    })
+    .alias('h', 'help')
+    .command('info', 'Print spreadsheet link', () => {
+    }, (argv: ArgumentsCamelCase<any>) => {
+        if (argv.id) {
+            const spreadsheetId = url2id(argv.id);
+            const link = id2url(spreadsheetId);
+            console.log('Spreadsheet:', link);
+        } else {
+            console.log('Spreadsheet:', 'NOT SET');
+        }
+
+        if (argv.sheet) {
+            console.log('Sheet name:', argv.sheet);
+        } else {
+            console.log('Sheet name not set');
+        }
     })
     .demandCommand(1)
     .parse()
