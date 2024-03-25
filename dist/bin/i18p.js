@@ -9,6 +9,7 @@ const yargs = require("yargs");
 const findUp = require("find-up");
 const fs = require("fs");
 const publish_1 = require("../publish");
+const parse_url_1 = require("../googlesheet/parse-url");
 const configPath = findUp.sync(['.i18prc', 'i18p.json']);
 if (configPath) {
     console.debug('Using config:', configPath);
@@ -21,14 +22,17 @@ yargs((0, helpers_1.hideBin)(process.argv))
     assert.ok(argv.id, '--id is required');
     assert.ok(argv.folder, '--folder is required');
     assert.ok(argv.keyFile, '--keyFile is required');
-    await (0, parse_1.parseToFolder)(argv.keyFile, argv.folder, argv.id, argv.sheet);
+    await (0, parse_1.parseToFolder)(argv.keyFile, argv.folder, argv.id, {
+        sheetName: argv.sheet,
+        skipEmpty: !!argv.skipEmpty,
+    });
 })
     .command('publish', 'copy i18n data to google sheet', () => {
 }, async (argv) => {
     assert.ok(argv.id, '--id is required');
     assert.ok(argv.folder, '--folder is required');
     assert.ok(argv.keyFile, '--keyFile is required');
-    await (0, publish_1.publishFolder)(argv.keyFile, argv.folder, argv.id, argv.sheet);
+    await (0, publish_1.publishFolder)(argv.keyFile, argv.folder, argv.id, { sheetName: argv.sheet });
 })
     .option('id', {
     type: 'string',
@@ -41,6 +45,32 @@ yargs((0, helpers_1.hideBin)(process.argv))
     .option('keyFile', {
     type: 'string',
     description: 'local path to "Service Account" key file'
+})
+    .option('sheet', {
+    type: 'string',
+    description: '(optional) Sheet name'
+})
+    .option('skip-empty', {
+    type: 'boolean',
+    description: 'Skip empty cells'
+})
+    .alias('h', 'help')
+    .command('info', 'Print spreadsheet link', () => {
+}, (argv) => {
+    if (argv.id) {
+        const spreadsheetId = (0, parse_url_1.url2id)(argv.id);
+        const link = (0, parse_url_1.id2url)(spreadsheetId);
+        console.log('Spreadsheet:', link);
+    }
+    else {
+        console.log('Spreadsheet:', 'NOT SET');
+    }
+    if (argv.sheet) {
+        console.log('Sheet name:', argv.sheet);
+    }
+    else {
+        console.log('Sheet name not set');
+    }
 })
     .demandCommand(1)
     .parse();

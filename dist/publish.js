@@ -8,7 +8,7 @@ const parse_url_1 = require("./googlesheet/parse-url");
 /**
  *
  */
-async function publishFolder(keyFile, folderpath, spreadsheetIdOrUrl, sheetName) {
+async function publishFolder(keyFile, folderpath, spreadsheetIdOrUrl, opts) {
     const spreadsheetId = (0, parse_url_1.url2id)(spreadsheetIdOrUrl);
     const langFiles = (0, parser_1.jsonScanFolder)(folderpath);
     // console.log('Found languages:');
@@ -31,7 +31,7 @@ async function publishFolder(keyFile, folderpath, spreadsheetIdOrUrl, sheetName)
     ///
     const link = (0, parse_url_1.id2url)(spreadsheetId);
     console.log('Uploading to spreadsheet: ', link);
-    await (0, googlesheet_1.publishSpreadsheet)(keyFile, filesData, spreadsheetId, sheetName);
+    await (0, googlesheet_1.publishSpreadsheet)(keyFile, filesData, spreadsheetId, opts === null || opts === void 0 ? void 0 : opts.sheetName);
     console.log('Done!');
 }
 exports.publishFolder = publishFolder;

@@ -7,7 +7,7 @@ i18n parser is a tool to parse Google Sheets into `i18n/{lang}.json` files and v
 TODO: update installation
 
 ```bash
-npm install --save-dev "git+https://github.com/MaxXx1313/i18n-parser.git"
+npm install --save-dev "git+https://github.com/MaxXx1313/i18n-parser.git#1.2"
 ```
 
 ### 1. GCP configuration
