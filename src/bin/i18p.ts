@@ -45,5 +45,9 @@ yargs(hideBin(process.argv))
         type: 'string',
         description: 'local path to "Service Account" key file'
     })
+    .option('sheet', {
+        type: 'string',
+        description: '(optional) Sheet name'
+    })
     .demandCommand(1)
     .parse()
