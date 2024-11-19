@@ -48,6 +48,15 @@ async function parseSpreadsheet(keyFile, spreadsheetId, sheetName) {
     const tokensColumnData = await googleSheetClient.readGoogleSheet(spreadsheetId, 'A:A', sheetName);
     const tokensColumn = [];
     for (let i = 0; i < (tokensColumnData === null || tokensColumnData === void 0 ? void 0 : tokensColumnData.length); i++) {
+        const tokenStr = tokensColumnData[i][0];
+        if (!tokenStr) {
+            // skip no-token
+            continue;
+        }
+        if (tokenStr.startsWith(';')) {
+            // skip comment
+            continue;
+        }
         tokensColumn.push(tokensColumnData[i][0]);
     }
     assert.equal(tokensColumn[0], 'token', 'Cell A1 must have "token" name');
