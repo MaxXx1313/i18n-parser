@@ -19,34 +19,76 @@ export function xpath_get(obj: anyobject, path: string | string[], separator = '
     return result;
 }
 
+type SortKeysFn = (a: string, b: string) => number;
 
 /**
  * set object property value by point-divided selector like 'book.meta.author'
  * @param {T} obj
  * @param {string|Array<string>} path
- * @param {string} [separator='.']
- * @param {number} [maxDepth=-1]
+ * @param opts
+ * @param {string} [opts.separator='.']
+ * @param {number} [opts.maxDepth=-1]
+ * @param {function | boolean} [opts.sortFn] default is 'localeCompare'
  * @param {*} value
  *
  * @return {T} updated object
  */
-export function xpath_set(obj: anyobject, path: string | string[], value: any, separator = '.', maxDepth = -1): anyobject {
-    separator = (typeof separator == 'undefined') ? '.' : separator;
-    let pathParts = Array.isArray(path) ? path : path.split(separator);
-    maxDepth = Math.min(maxDepth, pathParts.length - 1);
+export function xpath_set(
+    obj: anyobject,
+    path: string | string[],
+    value: any,
+    opts?: {
+        separator?: string,
+        maxDepth?: number,
+        sortFn?: boolean | SortKeysFn,
+    },
+): anyobject {
+    // default values
+    opts = opts || {};
+    opts.separator = (typeof opts.separator == 'undefined') ? '.' : opts.separator;
+    opts.maxDepth = (typeof opts.maxDepth == 'undefined') ? -1 : opts.maxDepth;
+
+    let sortFn: SortKeysFn | null = null;
+    if (typeof opts.sortFn == 'function') {
+        sortFn = opts.sortFn;
+    } else if (opts.sortFn === true) {
+        sortFn = (a, b) => a.localeCompare(b);
+    }
+
+    // prepare data
+    let pathParts = Array.isArray(path) ? path : path.split(opts.separator);
+    let maxDepth = Math.min(opts.maxDepth, pathParts.length - 1);
+
     let pathTokens = maxDepth >= 0 ? pathParts.slice(0, maxDepth) : pathParts.slice(0, -1);
     let valTokens = maxDepth >= 0 ? pathParts.slice(maxDepth) : [pathParts[pathParts.length - 1]];
-    let valPart = valTokens.join(separator);
+    let valPart = valTokens.join(opts.separator);
 
+    // find property
     let result = obj;
     for (let i = 0; result && (i < pathTokens.length); i++) {
-        result[pathTokens[i]] = result[pathTokens[i]] || {};
+        _setPropertyOrdered(result, pathTokens[i], result[pathTokens[i]] || {}, sortFn);
         result = result[pathTokens[i]];
     }
-    result[valPart] = value;
+
+    // set value
+    _setPropertyOrdered(result, valPart, value, sortFn);
+
     return obj;
 }
 
+// reorder keys
+function _setPropertyOrdered(obj: anyobject, prop: string, value: any, sortFn?: SortKeysFn | null): void {
+    obj[prop] = value;
+    if ( !sortFn) {
+        return;
+    }
+    const keys = Object.keys(obj).sort(sortFn);
+    for (const k of keys) {
+        const _value = obj[k];
+        delete obj[k];
+        obj[k] = _value;
+    }
+}
 
 /**
  * delete object property by point-divided selector like 'book.meta.author'

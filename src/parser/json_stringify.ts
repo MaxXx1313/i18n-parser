@@ -22,7 +22,7 @@ export function jsonStringify(data: JsonToken[]): anyobject {
     const result = {};
 
     for (const token of data) {
-        xpath_set(result, token.key, token.value, '.', 1);
+        xpath_set(result, token.key, token.value, {maxDepth: 1, sortFn: true});
     }
     return result;
 
