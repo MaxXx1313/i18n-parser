@@ -58,6 +58,15 @@ export async function parseSpreadsheet(keyFile: string, spreadsheetId: string, s
 
     const tokensColumn = [];
     for (let i = 0; i < tokensColumnData?.length; i++) {
+        const tokenStr = tokensColumnData[i][0];
+        if (!tokenStr) {
+            // skip no-token
+            continue;
+        }
+        if (tokenStr.startsWith(';')) {
+            // skip comment
+            continue;
+        }
         tokensColumn.push(tokensColumnData[i][0]);
     }
     assert.equal(tokensColumn[0], 'token', 'Cell A1 must have "token" name');
