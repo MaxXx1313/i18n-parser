@@ -7,7 +7,7 @@ i18n parser is a tool to parse Google Sheets into `i18n/{lang}.json` files and v
 TODO: update installation
 
 ```bash
-npm install --save-dev "git+https://github.com/MaxXx1313/i18n-parser.git#1.3"
+npm install --save-dev "git+https://github.com/MaxXx1313/i18n-parser.git#1.4"
 ```
 
 ### 1. GCP configuration
@@ -16,9 +16,9 @@ It's essential to create service account in GCP:
 
 * Create GCP project ( https://console.cloud.google.com/projectcreate)
 * Enable Sheet API (https://console.cloud.google.com/marketplace/product/google/sheets.googleapis.com)
-* Create SA account (https://console.cloud.google.com/apis/credentials)
+* Create service account (https://console.cloud.google.com/apis/credentials)
     * create new "Service Account"
-    * download key for the account created
+    * download key for the account created in json format
 * Share target spreadsheet to the account created (Write permission is needed to 'publish' only)
 
 ### 2. Local configuration
